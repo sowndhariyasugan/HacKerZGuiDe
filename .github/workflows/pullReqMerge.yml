@@ -18,17 +18,15 @@ jobs:
         if: env.merged == 'true'
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets.MY_TOKEN }}
+          github-token: ${{ secrets.MY_TOKEN }}  # Ensure correct secret name here
           script: |
             const { owner, repo } = context.repo;
             const prNumber = context.payload.pull_request.number;
             const prBody = context.payload.pull_request.body || '';
             const linkedIssues = prBody.match(/#\d+/g); // Find issue numbers in the PR body (e.g., "closes #123")
-
             console.log(`Processing PR #${prNumber}`);
             console.log(`PR Body: ${prBody}`);
             console.log(`Linked Issues Found: ${linkedIssues}`);
-
             if (linkedIssues) {
               for (const issueTag of linkedIssues) {
                 const issueNumber = parseInt(issueTag.replace('#', ''), 10);
